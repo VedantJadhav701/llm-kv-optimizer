@@ -76,7 +76,14 @@ class InferenceEngine:
             # Initialize a proper DynamicCache object for the model to consume
             cache_obj = DynamicCache()
             if raw_past_key_values is not None:
-                for i, (k, v) in enumerate(raw_past_key_values):
+                # Handle both new 'Cache' objects and legacy 'tuple' structures
+                if hasattr(raw_past_key_values, "to_legacy_cache"):
+                    legacy_pv = raw_past_key_values.to_legacy_cache()
+                else:
+                    legacy_pv = raw_past_key_values
+                    
+                for i, layer_pv in enumerate(legacy_pv):
+                    k, v = layer_pv[0], layer_pv[1]
                     # Update and compress; new_k, new_v are FULL reconstructed KV
                     new_k, new_v = layer_caches[i].update(k, v)
                     cache_obj.update(new_k, new_v, i)
