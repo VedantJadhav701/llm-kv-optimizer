@@ -55,11 +55,16 @@ To test a specific method in a clean VRAM state:
 $env:METHOD="qjl"; python benchmarks/run_benchmarks.py
 ```
 
-### 2. High-Efficiency Inference
+### 2. High-Efficiency Inference (CLI)
 ```python
 from engine.inference import InferenceEngine
 # ... (see CONCEPT.md for simple usage)
 engine.generate("Explain the JL lemma.", method="qjl")
+```
+
+### 3. Interactive Web Dashboard
+```bash
+streamlit run app.py
 ```
 
 ---
