@@ -53,6 +53,11 @@ class InferenceEngine:
         import gc
         
         for step in range(max_new_tokens):
+            # --- NUCLEAR VRAM RECLAMATION (Pre-Forward) ---
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+
             # Standard generation step
             model_inputs = generated_ids[:, -1:] if current_past_key_values is not None else generated_ids
             
@@ -82,14 +87,9 @@ class InferenceEngine:
             
             generated_ids = torch.cat([generated_ids, next_token_id], dim=-1)
             
-            # --- NUCLEAR VRAM RECLAMATION ---
-            # Delete massive temporary objects immediately
+            # --- NUCLEAR VRAM RECLAMATION (Post-Forward) ---
             del outputs
             del logits
-            
-            # Periodic aggressive cleanup (every step to ensure no fragmentation)
-            gc.collect()
-            torch.cuda.empty_cache()
             
             if next_token_id == self.tokenizer.eos_token_id:
                 break
@@ -106,18 +106,3 @@ class InferenceEngine:
             "memory_mb": total_memory_mb,
             "latency": latency
         }
-
-if __name__ == "__main__":
-    import sys
-    import os
-    # Add project root to sys.path for absolute imports
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-    
-    from engine.model_loader import ModelLoader
-    loader = ModelLoader()
-    m, t = loader.load_model_and_tokenizer()
-    with open("configs/pipeline.yaml", "r") as f:
-        cfg = yaml.safe_load(f)
-    engine = InferenceEngine(m, t, cfg)
-    res = engine.generate("Explain KV cache optimization.", method="qjl")
-    print(res)

@@ -29,9 +29,9 @@ class ModelLoader:
 
         print(f"Loading model: {self.model_name} on {self.device}")
         
-        # Define a hard VRAM budget for the model weights (leave 2.5GB for overhead/cache)
-        # On 4GB Windows machines, this is the only way to avoid driver-level OOM lock.
-        max_memory = {0: "1.5GiB"} if self.device == "cuda" else None
+        # Define an ultra-lean VRAM budget for model weights (leave 3GB for OS/Inference)
+        # This is the 'safest' mode for 4GB Windows systems.
+        max_memory = {0: "1.0GiB"} if self.device == "cuda" else None
         
         model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
