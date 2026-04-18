@@ -1,6 +1,11 @@
+![LLM KV Optimizer Banner](.github/assets/banner.png)
+
 # 🚀 LLM KV Optimizer
 
-### *Extending the Horizon of 4GB GPUs*
+![CI Status](https://github.com/VedantJadhav701/llm-kv-optimizer/actions/workflows/ci.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![Hardware: RTX 3050](https://img.shields.io/badge/Hardware-RTX_3050_4GB-green.svg)](#)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
@@ -84,6 +89,22 @@ streamlit run app.py
 
 ## 👋 Concept for Beginners
 Confused about what "KV Cache" is? Check out our [**Beginner's Guide (CONCEPT.md)**](./CONCEPT.md) for a simple, 5-minute explanation.
+
+---
+
+## 🛠️ Roadmap: The Future of KV Optimization
+Help us reach the next level of memory efficiency!
+- [ ] **Phase 2: PagedAttention Integration** (vLLM style for 4GB).
+- [ ] **Phase 3: FP8 KV Caching** (For newest NVIDIA architectures).
+- [ ] **Phase 4: Multi-Token Prediction Support**.
+- [ ] **Phase 5: Native CUDA Kernels** for QJL (Massive speed boost).
+
+---
+
+## ⭐ Stargazers
+If you find this project useful, please consider giving it a star! It helps the project gain visibility and motivates further development.
+
+[![Star History Chart](https://api.star-history.com/svg?repos=VedantJadhav701/llm-kv-optimizer&type=Date)](https://star-history.com/VedantJadhav701/llm-kv-optimizer)
 
 ---
 
