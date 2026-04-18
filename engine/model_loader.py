@@ -29,8 +29,9 @@ class ModelLoader:
 
         print(f"Loading model: {self.model_name} on {self.device}")
         
-        # Define a hard VRAM budget for the model weights (leave 800MB for overhead/cache)
-        max_memory = {0: "3.2GiB"} if self.device == "cuda" else None
+        # Define a hard VRAM budget for the model weights (leave 1.5GB for overhead/cache)
+        # This is critical for 4GB GPUs to prevent 'Sticky OOM'
+        max_memory = {0: "2.5GiB"} if self.device == "cuda" else None
         
         model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
@@ -38,6 +39,7 @@ class ModelLoader:
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
             device_map="auto" if self.device == "cuda" else None,
             max_memory=max_memory,
+            attn_implementation="eager", # 'eager' is more memory-stable than 'sdpa' on small GPUs
             trust_remote_code=True
         )
 

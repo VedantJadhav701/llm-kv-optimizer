@@ -33,6 +33,7 @@ def load_engine():
     Cached model loading. This ensures we don't reload the 
     multi-GB model every time the UI updates.
     """
+    clear_vram() # Proactive clean before loading
     with open("configs/pipeline.yaml", "r") as f:
         cfg = yaml.safe_load(f)
     
