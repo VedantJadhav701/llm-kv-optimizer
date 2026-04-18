@@ -34,7 +34,8 @@ arxiv_data/
 .DS_Store
 Thumbs.db
 
-# Project Specific
-scratch/
-experiments/*.csv
-!experiments/results.csv # We want to keep the final results
+# Private Research Notes (DO NOT UPLOAD)
+RESEARCH_STRATEGY.md
+diag_vram.py
+profile_vram.py
+experiments/final_robustness_log.txt
