@@ -1,0 +1,25 @@
+model:
+  name: "Qwen/Qwen2-0.5B"
+  max_length: 512
+  use_cache: false
+
+data:
+  papers_dir: "papers"
+  dataset_path: "data_pipeline/dataset.json"
+  arxiv_search_query: "all:LLM quantization KV cache optimization"
+  max_papers: 10
+  chunk_size: 400
+  chunk_overlap: 50
+
+training:
+  r: 8
+  lora_alpha: 16
+  target_modules: ["q_proj", "v_proj"]
+  lora_dropout: 0.05
+  batch_size: 1
+  gradient_accumulation_steps: 8
+  learning_rate: 2e-4
+  epochs: 2
+
+kv_cache:
+  method: "fp16" # Options: fp16, qjl, polar

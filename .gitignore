@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+thermo_agent/
+
+# ML Artifacts (DO NOT UPLOAD THESE)
+# Base models and fine-tuned weights are too large for GitHub
+experiments/qwen2_lora_adapter/
+*model.safetensors*
+*adapter_model.bin*
+*.pt
+*.pth
+*.ckpt
+*.bin
+
+# Data
+papers/*.pdf
+data_pipeline/downloads/
+arxiv_data/
+
+# OS and Editors
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Project Specific
+scratch/
+experiments/*.csv
+!experiments/results.csv # We want to keep the final results
