@@ -28,11 +28,16 @@ class ModelLoader:
         )
 
         print(f"Loading model: {self.model_name} on {self.device}")
+        
+        # Define a hard VRAM budget for the model weights (leave 800MB for overhead/cache)
+        max_memory = {0: "3.2GiB"} if self.device == "cuda" else None
+        
         model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
             quantization_config=bnb_config if self.device == "cuda" else None,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
             device_map="auto" if self.device == "cuda" else None,
+            max_memory=max_memory,
             trust_remote_code=True
         )
 

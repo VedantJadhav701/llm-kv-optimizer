@@ -16,10 +16,15 @@ st.set_page_config(
 )
 
 # --- Memory Reclamation ---
-import gc
 def clear_vram():
+    import gc
     gc.collect()
-    torch.cuda.empty_cache()
+    try:
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+    except Exception as e:
+        st.warning("⚠️ CUDA context is locked (Sticky OOM). Please restart the Streamlit app to reset the GPU driver.")
+        print(f"CUDA Cleanup Error: {e}")
 
 # --- Resource Caching ---
 @st.cache_resource
