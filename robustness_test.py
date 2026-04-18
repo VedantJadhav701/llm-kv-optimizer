@@ -13,9 +13,12 @@ from engine.inference import InferenceEngine
 
 def clear_memory():
     gc.collect()
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
-        torch.cuda.reset_peak_memory_stats()
+    try:
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+            torch.cuda.reset_peak_memory_stats()
+    except Exception:
+        pass # Ignore sticky OOM during cleanup
 
 def run_robustness_check():
     print("🚀 Starting Final Robustness Test Suite (4GB Optimized)...")
