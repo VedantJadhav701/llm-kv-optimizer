@@ -29,17 +29,25 @@ class ModelLoader:
 
         print(f"Loading model: {self.model_name} on {self.device}")
         
-        # Define an ultra-lean VRAM budget for model weights (leave 3GB for OS/Inference)
-        # This is the 'safest' mode for 4GB Windows systems.
-        max_memory = {0: "1.0GiB"} if self.device == "cuda" else None
+        # 1. Deterministic over Automatic: Force everything to device 0
+        device_map = {"": 0} if self.device == "cuda" else None
         
+        # 2. Hard-Coded Config Overrides (The 'Oxygen' Fix for 4GB)
+        # We manually cap the attention window to 512 to prevent buffer bloat
+        from transformers import AutoConfig
+        config = AutoConfig.from_pretrained(self.model_name)
+        config.sliding_window = 512
+        config.max_position_embeddings = 512
+        config.use_cache = True
+
         model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
+            config=config,
             quantization_config=bnb_config if self.device == "cuda" else None,
             torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
-            device_map="auto" if self.device == "cuda" else None,
-            max_memory=max_memory,
-            attn_implementation="eager", # 'eager' is more memory-stable than 'sdpa' on small GPUs
+            device_map=device_map,
+            low_cpu_mem_usage=True,
+            attn_implementation="eager",
             trust_remote_code=True
         )
 
